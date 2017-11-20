@@ -29,26 +29,28 @@ class Solution:
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-        
-        return self._subset(nums, [], 0)
+        if len(nums) == 0:
+            return [[]]
 
-    def _subset(self, nums, res, deep):
-        if len(nums[deep:]) == 1:
-            return res
-        # res.append(r_tem)
-        for i in nums[deep:]:
-            left = i
-            res.append([left])
-            tem_lst = self._subset(nums, res, deep+1)
-            print(tem_lst)
-            for item in tem_lst:
-                res.append([left] + item)
-            deep -= 1
+        tem = []
+        tem_r = self.subsets(nums[1:])
+        for item in tem_r:
+            tem.append(item)
+            tem.append([nums[0]]+item)
+        return tem
 
-        return res
 
 
 l = list(range(1,4))
 s = Solution()
 res = s.subsets(l)
 print(res)
+
+'''
+the question only costs me less than half an hour LOL...
+
+same method as question 77
+
+
+
+'''
