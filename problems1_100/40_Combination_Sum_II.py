@@ -26,33 +26,28 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         candidates.sort()
-        # print(candidates)
-        return self._rec(candidates, target)
+        return self.dfs(candidates, target)
 
-    def _rec(self, cands, target, tem=[], res=[], deepth=0):
+    def dfs(self, candidates, target):
+        
+        if target < 0:
+            return 
 
-        for i in range(deepth, len(cands)):
-            if i > deepth and cands[i] == cands[i-1]:
+        elif target == 0:
+            return [[]]
+
+        tem = []
+        for i in range(len(candidates)):
+            if i > 0 and candidates[i] == candidates[i-1]:
                 continue
-            t = tem[-1] if tem else 0
-            if cands[i] < t:
-                continue
-            tem = tem[:deepth] if tem else []
-            # print(tem)
-            if target - cands[i] == 0:
-                tem.append(cands[i])
-                res.append(tem)
-                break
-            elif target - cands[i] > 0:
+            new_cand = candidates[i+1:]
+            item = candidates[i]
+            r = self.dfs(new_cand, target-item)
+            if not r : continue
+            for j in r:
+                tem.append([item]+j)
 
-                deepth += 1
-                tem.append(cands[i])
-                self._rec(cands, target-cands[i], tem, res, deepth)
-                deepth -= 1
-            else:
-                break
-
-        return res
+        return tem
 
 
 lst = [1, 1, 2, 5, 6, 7, 10]

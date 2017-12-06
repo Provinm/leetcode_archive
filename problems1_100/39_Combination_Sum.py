@@ -27,43 +27,29 @@ class Solution(object):
         :type target: int
         :rtype: List[List[int]]
         """
+        return self.dfs(candidates, target)
 
-        return self._rec(candidates, target)
+    def dfs(self, candidates, target):
+        
+        if target < 0:
+            return 
 
-    def _rec(self, cands, target, tem=[], res=[], deepth=0):
+        elif target == 0:
+            return [[]]
 
-        for i in range(len(cands)):
+        tem = []
+        for i in range(len(candidates)):
+            new_cand = candidates[i:]
+            item = candidates[i]
+            r = self.dfs(new_cand, target-item)
+            if not r : continue
+            for j in r:
+                tem.append([item]+j)
 
-            tem = tem[:deepth] if tem else []
-            if target - cands[i] == 0:
-                tem.append(cands[i])
-                res.append(tem)
-                break
+        return tem
 
-            elif target - cands[i] > 0:
-                tem.append(cands[i])
-                deepth += 1
-                self.rec(cands[i:], target-cands[i], tem, res, deepth)
-                deepth -= 1
-                # tem = []
-
-            else:
-                # deepth -= 1
-                break
-
-
-        return res
-
-
-
-
-
-
-
-
-
-nums = [2]
-target = 1
+nums = []
+target = 7
 s = Solution()
 res = s.combinationSum(nums, target)
 print(res)

@@ -18,27 +18,27 @@ class Solution(object):
         :type divisor: int
         :rtype: int
         """
-        # mark = 1 if divisor
-        if divisor == 0: return -1
-        if divisor>0 and dividend>0 or divisor<0 and dividend<0:
-            mark = 1
-        else:
-            mark = -1
-        # divisor, dividend = abs(divisor), abs(dividend)
-        divisor = divisor if divisor>0 else divisor-divisor-divisor
-        dividend = dividend if dividend>0 else dividend-dividend-dividend
+        mark = (dividend<0) is (divisor<0)
+        dividend, divisor = abs(divisor), abs(dividend)
+        res = 0
+        square = 1
+        dd = dividend
+        while dividend <= divisor:
+        
+            if dd > divisor:
+                dd = dividend
+                square = 1
+            
+            else:
+                res += square
+                square += square
+                divisor = divisor - dd
+                dd <<= 1
 
-        count = 0
-        new_divisor = divisor
-        while True:
-            # if count
-            if new_divisor > dividend:
-                break
+        res = res if mark else -res
+        return min(max(-2147483648,res),2147483647)
 
-            new_divisor += divisor
-            count += 1
+s = Solution()
+r = s.divide(2, 3)
 
-        if mark > 0:
-            return count
-        else:
-            return mark-mark-mark
+print(r)
