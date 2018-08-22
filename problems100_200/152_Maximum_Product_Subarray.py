@@ -15,42 +15,31 @@ class Solution:
         :type nums: List[int]
         :rtype: int
         """
-        if len(nums) == 1:
-            return nums[0]
-        res = None
 
-        negetive_product = None
-        positive_product = 1
+        
+        if not nums:
+            return 0
 
-        cur_product = 1
-        for ele in nums:
-            if ele < 0:
-                if negetive_product:
-                    positive_product = negetive_product * cur_product * ele
-                    negetive_product = None
-                else:
-                    positive_product = cur_product if cur_product > positive_product else positive_product
-                    negetive_product = cur_product * ele
-
-                cur_product = 1
-                res = positive_product
-
-            elif ele == 0:
-                positive_product = cur_product if cur_product > positive_product else positive_product
-                negetive_product = None
+        num_max = tmp_max = nums.pop(0)
+        while nums:
+            num = nums.pop(0)
+            if num == 0:
+                num_max = max([num_max, 0, self.maxProduct(nums)])
+                tmp_max = 1
 
             else:
-                cur_product *= ele
+                tmp_max *= num
+                num_max = max([num, tmp_max, num_max])
+                tmp_max = num_max
 
-        else:
-            if not res:
-                res = negetive_product or positive_product
-            if cur_product != 1:
-                res *= cur_product
+        return num_max
 
-        return res
+
 
 l = [1111,3,5,0,5,7,-1,9]
+l = [2, 3, -2, 4]
+# l = [-2, 0, -1]
+# l = [-2, 5, -2, -4, 3]
 s = Solution()
 r = s.maxProduct(l)
 print(r)
